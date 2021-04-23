@@ -22,11 +22,13 @@
 
 
 ````shell
-sudo apt install ./google-chrome.deb
+wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+sudo apt --fix-broken install ./google-chrome-stable_current_amd64.deb
 
 unzip chromedriver_linux64.zip
 
-pip install selenium.whl 
+pip3 install selenium-3.141.0-py3-none-any.whl
+
 ````
 
 
@@ -41,6 +43,39 @@ pip install selenium.whl
 
 - 通过访问GW页面，根据是否有用户名的标签来判断是否已经登录。
 - 通过输入用户名，密码达到登录的目的。
+
+## 守护进程
+
+
+
+````
+sudo apt-get install supervisor
+
+cd /etc/supervisor/conf.d/
+sudo vim /etc/supervisor/conf.d/AutoLogin.conf 
+
+
+[program:AutoLogin]
+command=bash ./run.sh
+user=fukuiyuan
+directory=/usr/local/AutoLogin
+autostart=true
+autorestart=true
+stopasgroup=true
+killasgroup=true
+redirect_stderr=true
+stdout_logfile_maxbytes=200MB
+stdout_logfile_backups=10
+stdout_logfile=/usr/local/AutoLogin/AutoLogin-supervisor.log 
+
+
+sudo supervisorctl reload
+sudo supervisorctl start AutoLogin
+
+sudo supervisorctl tail AutoLogin stderr
+````
+
+
 
 
 

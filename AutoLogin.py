@@ -26,7 +26,7 @@ class AutoLogin:
     def initDriver(self):
         options = Options()
         options.add_argument("--headless")
-        self.driver = webdriver.Chrome(options=options)
+        self.driver = webdriver.Chrome( executable_path="./chromedriver",options=options)
 
     def clock(self):
         while True:
