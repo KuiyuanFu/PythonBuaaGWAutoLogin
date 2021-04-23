@@ -11,7 +11,11 @@
 - 使用Headless Chrome 和 selenium 操作网页
 - 一个守护程序自动启动
 
+
+
 ## 环境搭建
+
+
 
 [下载chrome 的安装文件](https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb)
 
@@ -33,7 +37,7 @@ pip3 install selenium-3.141.0-py3-none-any.whl
 
 
 
-### 主要逻辑
+## 主要逻辑
 
 
 
@@ -44,6 +48,8 @@ pip3 install selenium-3.141.0-py3-none-any.whl
 - 通过访问GW页面，根据是否有用户名的标签来判断是否已经登录。
 - 通过输入用户名，密码达到登录的目的。
 
+
+
 ## 守护进程
 
 
@@ -51,7 +57,6 @@ pip3 install selenium-3.141.0-py3-none-any.whl
 ````
 sudo apt-get install supervisor
 
-cd /etc/supervisor/conf.d/
 sudo vim /etc/supervisor/conf.d/AutoLogin.conf 
 
 
@@ -73,6 +78,7 @@ sudo supervisorctl reload
 sudo supervisorctl start AutoLogin
 
 sudo supervisorctl tail AutoLogin stderr
+
 ````
 
 
