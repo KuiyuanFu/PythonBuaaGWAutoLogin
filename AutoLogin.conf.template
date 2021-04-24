@@ -1,7 +1,7 @@
 [program:AutoLogin]
 command=bash ./run.sh
-user=fukuiyuan
-directory=/usr/local/AutoLogin
+user=USERNAME
+directory=DIRECTORY
 autostart=true
 autorestart=true
 stopasgroup=true
@@ -9,4 +9,4 @@ killasgroup=true
 redirect_stderr=true
 stdout_logfile_maxbytes=200MB
 stdout_logfile_backups=10
-stdout_logfile=/usr/local/AutoLogin/AutoLogin-supervisor.log 
+stdout_logfile=DIRECTORY/AutoLogin-supervisor.log 

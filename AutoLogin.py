@@ -17,10 +17,10 @@ logging.getLogger()
 class AutoLogin:
     url = "https://gw.buaa.edu.cn/srun_portal_pc?ac_id=1&theme=buaa"
 
-    def __init__(self, username, password, checkGap=60):
+    def __init__(self, username, password, checkInterval=60):
         self.username = username
         self.password = password
-        self.checkGap = checkGap
+        self.checkInterval = checkInterval
         self.initDriver()
 
     def initDriver(self):
@@ -33,12 +33,13 @@ class AutoLogin:
             flag = self.checkState()
             if not flag:
                 self.login()
-            time.sleep(self.checkGap)
+            time.sleep(self.checkInterval)
 
     def checkState(self):
         try:
             time.sleep(0.5)
             self.driver.get(self.url)
+            time.sleep(0.5)
             username = self.driver.find_element_by_id("user_name")
             logging.info('Already logged in !')
         except:
@@ -48,9 +49,10 @@ class AutoLogin:
 
     def login(self):
         try:
-            time.sleep(0.5)
             logging.info('Logging in !')
+            time.sleep(0.5)
             self.driver.get(self.url)
+            time.sleep(0.5)
             self.driver.find_element_by_id("username").send_keys(self.username)
             self.driver.find_element_by_id("password").send_keys(self.password)
             self.driver.find_element_by_id("login").click()
