@@ -4,7 +4,8 @@ import time
 import os
 
 rootPath = os.path.dirname(sys.path[0])
-os.chdir(rootPath)
+if rootPath:
+    os.chdir(rootPath)
 
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -37,6 +38,7 @@ class BuaaGw:
             return
 
     def login(self, username, password):
+        flag = True
         try:
             self.driver.get(self.url)
             WebDriverWait(self.driver,
@@ -53,9 +55,29 @@ class BuaaGw:
             self.driver.find_element_by_id("password").send_keys(password)
             self.driver.find_element_by_id("login").click()
 
-            print('Login!')
+            print('Logining!')
         except:
             print('Already logged in!')
+            flag = False
+
+        self.status()
+        return flag
+
+    def status(self):
+        try:
+            self.driver.get(self.url)
+            WebDriverWait(
+                self.driver,
+                1).until(lambda driver: driver.find_element_by_css_selector(
+                    "#user_name").is_displayed())
+
+            userName = self.driver.find_element_by_css_selector(
+                "#user_name").text
+            ip = self.driver.find_element_by_css_selector("#ip").text
+
+            print('user_name:{}\tip:{}\t'.format(userName, ip))
+        except:
+            print('Not logged in!')
             return False
         return True
 
@@ -64,12 +86,17 @@ if __name__ == '__main__':
     if len(sys.argv) < 2:
         print('buaagw login USERNAME PASSWORD')
         print('buaagw logout')
+        print('buaagw status')
         sys.exit()
     gw = BuaaGw()
     if sys.argv[1] == 'login':
         if len(sys.argv) < 4:
-            print('Insufficient parameters!')
+            print('There are not enough parameters!')
             sys.exit()
         gw.login(sys.argv[2], sys.argv[3])
     elif sys.argv[1] == 'logout':
         gw.logout()
+    elif sys.argv[1] == 'status':
+        gw.status()
+    else:
+        print('The argument is wrong!')
