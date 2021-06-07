@@ -54,10 +54,18 @@ class BuaaGw:
             self.driver.find_element_by_id("username").send_keys(username)
             self.driver.find_element_by_id("password").send_keys(password)
             self.driver.find_element_by_id("login").click()
-
-            print('Logining!')
         except:
             print('Already logged in!')
+            flag = False
+
+        try:
+            print('Logining!')
+            WebDriverWait(
+                self.driver,
+                1).until(lambda driver: driver.find_element_by_css_selector(
+                    "#user_name").is_displayed())
+        except:
+            print('The password is wrong!')
             flag = False
 
         self.status()
