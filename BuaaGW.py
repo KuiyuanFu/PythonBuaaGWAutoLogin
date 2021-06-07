@@ -57,16 +57,15 @@ class BuaaGw:
         except:
             print('Already logged in!')
             flag = False
-
-        try:
-            print('Logining!')
-            WebDriverWait(
-                self.driver,
-                1).until(lambda driver: driver.find_element_by_css_selector(
-                    "#user_name").is_displayed())
-        except:
-            print('The password is wrong!')
-            flag = False
+        if flag:
+            try:
+                print('Logining!')
+                WebDriverWait(self.driver, 1).until(
+                    lambda driver: driver.find_element_by_css_selector(
+                        "#user_name").is_displayed())
+            except:
+                print('The password is wrong!')
+                flag = False
 
         self.status()
         return flag
