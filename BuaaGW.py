@@ -81,12 +81,21 @@ class BuaaGw:
             return False
         return True
 
+    def close(self):
+        self.driver.close()
+        return True
+
+
+def printInfo():
+    print('The argument is wrong!')
+    print('buaagw login USERNAME PASSWORD')
+    print('buaagw logout')
+    print('buaagw status')
+
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:
-        print('buaagw login USERNAME PASSWORD')
-        print('buaagw logout')
-        print('buaagw status')
+        printInfo()
         sys.exit()
     gw = BuaaGw()
     if sys.argv[1] == 'login':
@@ -99,4 +108,5 @@ if __name__ == '__main__':
     elif sys.argv[1] == 'status':
         gw.status()
     else:
-        print('The argument is wrong!')
+        printInfo()
+    gw.close()
