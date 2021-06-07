@@ -3,10 +3,6 @@ import sys
 import time
 import os
 
-rootPath = os.path.dirname(sys.path[0])
-if rootPath:
-    os.chdir(rootPath)
-
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
@@ -88,8 +84,8 @@ class BuaaGw:
             return False
         return True
 
-    def close(self):
-        self.driver.close()
+    def quit(self):
+        self.driver.quit()
         return True
 
 
@@ -116,4 +112,4 @@ if __name__ == '__main__':
         gw.status()
     else:
         printInfo()
-    gw.close()
+    gw.quit()
