@@ -54,54 +54,63 @@ pip3 install selenium-3.141.0-py3-none-any.whl
 - 通过输入用户名，密码达到登录的目的。
 
 
-
-
-
-## 守护进程
-
-
-
-````
-sudo apt-get install supervisor
-
-sudo vim /etc/supervisor/conf.d/AutoLogin.conf 
-
-[program:AutoLogin]
-command=bash ./run.sh
-user=USERNAME
-directory=DIRECTORY
-autostart=true
-autorestart=true
-stopasgroup=true
-killasgroup=true
-redirect_stderr=true
-stdout_logfile_maxbytes=200MB
-stdout_logfile_backups=10
-stdout_logfile=DIRECTORY/AutoLogin-supervisor.log 
-
-
-sudo supervisorctl reload
-sudo supervisorctl start AutoLogin
-
-sudo supervisorctl tail AutoLogin stderr
-
-````
-
-
-
 ## 使用
 
+```sh
+usage: buaagw [-h] {login,logout,status} ...
+
+BUAA gateway.
+
+positional arguments:
+  {login,logout,status}
+                        functions
+    login               login
+    logout              logout
+    status              status
+
+optional arguments:
+  -h, --help            show this help message and exit
+
+```
+
+```sh
+usage: buaagw login [-h] [-r interval] username password
+
+positional arguments:
+  username     buaa gw username.
+  password     buaa gw password.
+
+optional arguments:
+  -h, --help   show this help message and exit
+  -r interval  The interval of testing the network connection. Default is 0,
+               not test and retry.
+```
+
+## 注册为服务
 
 
-`AutoLogin.conf.template` 为守护进程的配置文件，需要修改第三行 `user=USERNAME` 及 第四行 `directory=DIRECTORY` 第12行 `stdout_logfile=DIRECTORY/AutoLogin-supervisor.log ` 中的大写变量。
+```sh
+sudo vim /etc/systemd/system/buaagw.service
 
+# context start
+[Unit]
+Description=buaagw
+After=network.target
+StartLimitIntervalSec=0
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User=root
+ExecStart=/etc/bin/buaagw login
 
+[Install]
+WantedBy=multi-user.target
+# context end
 
-`run.sh.template` 为启动程序的shell文件。
+sudo systemctl daemon-reload
+sudo systemctl enable buaagw.service 
+sudo systemctl restart buaagw.service
+sudo systemctl status buaagw.service
 
-`python3 AutoLogin.py USERNAME PASSWORD CHECKINTERVAL` 参数为 用户名 密码 及检测间隔。
-
-
-
-需要把后缀去掉。
-
+```
